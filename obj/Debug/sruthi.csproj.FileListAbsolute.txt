@@ -1,0 +1,12 @@
+D:\Clone folder\sruthi\sruthi\bin\Debug\sruthi.exe.config
+D:\Clone folder\sruthi\sruthi\bin\Debug\sruthi.exe
+D:\Clone folder\sruthi\sruthi\bin\Debug\sruthi.pdb
+D:\Clone folder\sruthi\sruthi\bin\Debug\WebDriver.dll
+D:\Clone folder\sruthi\sruthi\bin\Debug\WebDriver.xml
+D:\Clone folder\sruthi\sruthi\obj\Debug\sruthi.csprojAssemblyReference.cache
+D:\Clone folder\sruthi\sruthi\obj\Debug\sruthi.csproj.CoreCompileInputs.cache
+D:\Clone folder\sruthi\sruthi\obj\Debug\sruthi.csproj.CopyComplete
+D:\Clone folder\sruthi\sruthi\obj\Debug\sruthi.exe
+D:\Clone folder\sruthi\sruthi\obj\Debug\sruthi.pdb
+D:\Clone folder\sruthi\sruthi\bin\Debug\WebDriver.Support.dll
+D:\Clone folder\sruthi\sruthi\bin\Debug\WebDriver.Support.xml
