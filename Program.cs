@@ -63,7 +63,7 @@ namespace sruthi
 
              IWebElement TimeMaterial = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
              TimeMaterial.Click(); 
-
+            
             
             // create new record
             IWebElement CreateNew = driver.FindElement(By.XPath("//*[@id='container']/p/a"));
@@ -103,22 +103,24 @@ namespace sruthi
                 Console.WriteLine("Failed - record not saved ");
             }
 
-
-            // validate create new record
+            // validate createNew page
             Thread.Sleep(1000);
-            IWebElement lastpage = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]/span"));
+
+            IWebElement lastpage = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]"));
             lastpage.Click();
 
-            IWebElement lastrecord = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]"));
-            if (lastrecord.Text == "BS00VP")
+            IWebElement lastrecord = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[9]/td[1]"));
+
+            if(lastrecord.Text == "BS00VP")
             {
-                Console.WriteLine("Passed - Record saved succesfully ");
+                Console.WriteLine("Passed - user created record");
             }
             else
             {
-                Console.WriteLine("Failed");
+                Console.WriteLine("Failed - record not created");
             }
 
+            // to edit 
             // Goto firstpage 
             IWebElement firstpage = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[1]/span"));
             firstpage.Click();
@@ -130,12 +132,12 @@ namespace sruthi
 
             // enter code and click 
             driver.FindElement(By.XPath("//*[@id='Code']")).Clear();
-            driver.FindElement(By.XPath("//*[@id='Code']")).SendKeys("sruthi");
+            driver.FindElement(By.XPath("//*[@id='Code']")).SendKeys("hi");
             driver.FindElement(By.XPath("//*[@id='SaveButton']")).Click();
 
             // validate edit
-            Thread.Sleep(1000);
-            if (driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]")).Text == "sruthi")
+            Thread.Sleep(2000);
+            if (driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]")).Text == "hi")
             {
                 Console.WriteLine("Passed - Record edited succesfully");
             }
@@ -144,6 +146,12 @@ namespace sruthi
                 Console.WriteLine("Failed - recors is not edited");
             }
 
+            // to delete 
+
+            IWebElement Delete = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[2]/td[5]/a[2]"));
+            Delete.Click();
+
+            driver.SwitchTo().Alert().Accept();
 
 
 
