@@ -21,8 +21,10 @@ namespace sruthi
             driver.Navigate().GoToUrl("http://horse-dev.azurewebsites.net");
 
             // validate browser url
+            //get current url and store it in a variable
             String CurrentUrl = driver.Url;
-            Console.WriteLine(CurrentUrl);
+
+            //compare currenturl with expected url
             if (CurrentUrl == "http://horse-dev.azurewebsites.net/Account/Login?ReturnUrl=%2f")
             {
                 Console.WriteLine("Passed - Browser navigated to Turnup login page ");
@@ -56,54 +58,62 @@ namespace sruthi
             }
 
 
-             // administration dropdown
-
+             // Click on administration dropdown
              IWebElement Administration = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
              Administration.Click();
 
-             IWebElement TimeMaterial = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
+            // Select Time & Material from administration dropdown
+            IWebElement TimeMaterial = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
              TimeMaterial.Click(); 
             
             
-            // create new record
+            // Create new record
+
+            // Click on Create New button
             IWebElement CreateNew = driver.FindElement(By.XPath("//*[@id='container']/p/a"));
             CreateNew.Click();
 
+            // enter TypeCode
             IWebElement TypeCode = driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]"));
             TypeCode.Click();
 
             Thread.Sleep(1000);
 
+            // select Material
             IWebElement Material = driver.FindElement(By.XPath("//*[@id='TypeCode_listbox']/li[1]"));
             Material.Click();
 
+            //enter Code
             IWebElement Code = driver.FindElement(By.Id("Code"));
             Code.SendKeys("BS00VP");
 
+            //enter Description
             IWebElement Description = driver.FindElement(By.Id("Description"));
             Description.SendKeys("The material is furniture ");
 
+            //enter priceperunit
             IWebElement Priceperunit = driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[4]/div/span[1]/span/input[1]"));
             Priceperunit.SendKeys("4000");
 
-            // Save button 
+            // Click Save button 
             IWebElement Save = driver.FindElement(By.Id("SaveButton"));
             Save.Click();
 
-            // validate save button by verifying Url
+            // validate clicking Save button takes you to TimeMaterial page
             Thread.Sleep(1000);
+
             String TimeMaterialUrl = driver.Url;
 
             if (TimeMaterialUrl == "http://horse-dev.azurewebsites.net/TimeMaterial")
             {
-                Console.WriteLine("Passed - record saved succesfully");
+                Console.WriteLine("Passed - save button takes user to TimeMaterial page succesfully");
             }
             else
             {
-                Console.WriteLine("Failed - record not saved ");
+                Console.WriteLine("Failed - save button not taken user to TimeMaterial page");
             }
 
-            // validate createNew page
+            // validate existance of new record
             Thread.Sleep(1000);
 
             IWebElement lastpage = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]"));
@@ -152,10 +162,6 @@ namespace sruthi
             Delete.Click();
 
             driver.SwitchTo().Alert().Accept();
-
-
-
-
 
         }
     }
