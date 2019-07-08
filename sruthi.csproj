@@ -52,13 +52,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Helpers\Commondriver.cs" />
+    <Compile Include="Pages\DeleteTMpage.cs" />
+    <Compile Include="Pages\EditTMpage.cs" />
+    <Compile Include="Pages\Homepage.cs" />
+    <Compile Include="Pages\Loginpage.cs" />
+    <Compile Include="Pages\CreateTMpage.cs" />
+    <Compile Include="Test\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Selenium.Chrome.WebDriver.74.0.0\build\Selenium.Chrome.WebDriver.targets" Condition="Exists('..\packages\Selenium.Chrome.WebDriver.74.0.0\build\Selenium.Chrome.WebDriver.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
