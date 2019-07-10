@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using sruthi.Helpers;
 using System;
 using System.Collections.Generic;
@@ -10,26 +12,31 @@ namespace sruthi.Pages
 {
     class Loginpage
     {
-        public void Loginsteps(IWebDriver driver)
+        public void Loginsteps(IWebDriver driver, WebDriverWait wait)
         {
+            
             //Maximize the window
             driver.Manage().Window.Maximize();
 
             //Navigate to Turn up login page URL
             driver.Navigate().GoToUrl("http://horse-dev.azurewebsites.net");
 
+            wait.Until(ExpectedConditions.TitleContains("Log In - Dispatching System"));
+
             //Get current url and store it in a variable
             String CurrentUrl = driver.Url;
 
             //Validate if user had navigated to Turnup login page successfully
-            if (CurrentUrl == "http://horse-dev.azurewebsites.net/Account/Login?ReturnUrl=%2f")
-            {
-                Console.WriteLine("Passed - Browser navigated to Turnup login page ");
-            }
-            else
-            {
-                Console.WriteLine("Failed - Browser navigated to wrong url");
-            }
+            /* if (CurrentUrl == "http://horse-dev.azurewebsites.net/Account/Login?ReturnUrl=%2f")
+             {
+                 Console.WriteLine("Passed - Browser navigated to Turnup login page ");
+             }
+             else
+             {
+                 Console.WriteLine("Failed - Browser navigated to wrong url");
+             }*/
+            Assert.That(CurrentUrl, Is.EqualTo("http://horse-dev.azurewebsites.net/Account/Login?ReturnUrl=%2f"));
+
             
             //Enter username
             IWebElement Username = driver.FindElement(By.Id("UserName"));
@@ -45,7 +52,7 @@ namespace sruthi.Pages
 
             //Validate if user had logged in successfully
             IWebElement Hellohari = driver.FindElement(By.XPath("//*[@id='logoutForm']/ul/li/a"));
-            if (Hellohari.Text == "Hello hari!")
+            /*if (Hellohari.Text == "Hello hari!")
             {
                 Console.WriteLine("Passed - user login successfully  ");
             }
@@ -53,7 +60,8 @@ namespace sruthi.Pages
             {
                 Console.WriteLine("Failed - unable to logged in  ");
             }
-
+            */
+            Assert.That(Hellohari.Text, Is.EqualTo("Hello hari!"));
 
         }
     }
