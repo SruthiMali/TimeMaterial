@@ -13,38 +13,46 @@ namespace sruthi.Pages
 {
     class TMpage
     {
-            public void createTMsteps(IWebDriver driver, WebDriverWait wait)
+        IWebDriver driver;
+        WebDriverWait wait;
+        public TMpage(IWebDriver driver)
         {
+            this.driver = driver;
+        }
+        IWebElement CreateNew => driver.FindElement(By.XPath("//*[@id='container']/p/a"));
+        IWebElement TypeCode => driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]"));
+        IWebElement Material => driver.FindElement(By.XPath("//*[@id='TypeCode_listbox']/li[1]"));
+        IWebElement Code => driver.FindElement(By.Id("Code"));
+        IWebElement Description => driver.FindElement(By.Id("Description"));
+        IWebElement Priceperunit => driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[4]/div/span[1]/span/input[1]"));
+        IWebElement Save => driver.FindElement(By.Id("SaveButton"));
+
+        public void createTMsteps()
+        {    
             // Create new record
             // Click on Create New button
-            IWebElement CreateNew = driver.FindElement(By.XPath("//*[@id='container']/p/a"));
             CreateNew.Click();
 
-            // enter TypeCode
-            IWebElement TypeCode = driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[1]/div/span[1]"));
+            // Select TypeCode
             TypeCode.Click();
 
             //wait
-            wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='TypeCode_listbox']/li[1]")));
+            //wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='TypeCode_listbox']/li[1]")));
+            Thread.Sleep(2000);
 
             // select Material
-            IWebElement Material = driver.FindElement(By.XPath("//*[@id='TypeCode_listbox']/li[1]"));
             Material.Click();
 
             //enter Code
-            IWebElement Code = driver.FindElement(By.Id("Code"));
             Code.SendKeys("BS00VP");
 
             //enter Description
-            IWebElement Description = driver.FindElement(By.Id("Description"));
             Description.SendKeys("The material is furniture ");
 
             //enter priceperunit
-            IWebElement Priceperunit = driver.FindElement(By.XPath("//*[@id='TimeMaterialEditForm']/div/div[4]/div/span[1]/span/input[1]"));
             Priceperunit.SendKeys("4000");
 
             // Click Save button 
-            IWebElement Save = driver.FindElement(By.Id("SaveButton"));
             Save.Click();
 
             // Validate if clicking Save button takes user to TimeMaterial page
@@ -52,7 +60,9 @@ namespace sruthi.Pages
 
             String TimeMaterialUrl = driver.Url;
 
-            /* if (TimeMaterialUrl == "http://horse-dev.azurewebsites.net/TimeMaterial")
+            Assert.That(TimeMaterialUrl, Is.EqualTo("http://horse-dev.azurewebsites.net/TimeMaterial"));
+
+            /*if (TimeMaterialUrl == "http://horse-dev.azurewebsites.net/TimeMaterial")
             {
                 Console.WriteLine("Passed - save button takes user to TimeMaterial page succesfully");
             }
@@ -60,74 +70,82 @@ namespace sruthi.Pages
             {
                 Console.WriteLine("Failed - save button not taken user to TimeMaterial page");
             }*/
-            Assert.That(TimeMaterialUrl, Is.EqualTo("http://horse-dev.azurewebsites.net/TimeMaterial"));
 
-            // Validate existance of new record
-            // wait 
-            //Thread.Sleep(1000);
-            wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]")));
-
-            // Navigate to lastpage
-            IWebElement lastpage = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[4]"));
-            lastpage.Click();
-
-            // Verify if the last record is newly created
-            IWebElement lastrecord = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[5]/td[1]"));
-
-            /*if (lastrecord.Text == "BS00VP")
-            {
-                Console.WriteLine("Passed - user created record");
-            }
-            else
-            {
-                Console.WriteLine("Failed - record not created");
-            }*/
-
-            Assert.That(lastrecord.Text, Is.EqualTo("BS00VP"));
         }
-            public void editTMsteps(IWebDriver driver, WebDriverWait wait)
-            {
-                // to edit 
-                // Navigate to firstpage 
-                IWebElement firstpage = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[4]/a[1]/span"));
-                firstpage.Click();
-                Thread.Sleep(1000);
 
+        internal void ValidateCreateTM()
+        {
+            Thread.Sleep(3000);
+            try
+            {
+                while (true)
+                {
+                    for (var i = 1; i <= 10; i++)
+                    {
+                        var rowText = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[" + i + "]/td[1]")).Text;
+                        if (rowText == "Test1234")
+                        {
+                            Console.WriteLine("Passed - Record created successfully");
+                            return;
+                        }
+                    }
+                    
+                    driver.FindElement(By.XPath("//a[@title='Go to the next page']")).Click();
+                }
+
+            }
+            catch(Exception)
+            {
+                Console.WriteLine("Failed - Record not created");
+            }
+
+
+        }
+
+        public void editTMsteps()
+            {
+            // to edit
+                Thread.Sleep(2000);
                 //Click on Edit Button for first record in first page.
                 IWebElement Edit = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[5]/a[1]"));
                 Edit.Click();
 
                 // Enter code and click 
-                driver.FindElement(By.XPath("//*[@id='Code']")).Clear();
-                driver.FindElement(By.XPath("//*[@id='Code']")).SendKeys("hi");
-                driver.FindElement(By.XPath("//*[@id='SaveButton']")).Click();
+                Code.Clear();
+                Code.SendKeys("hi");
+                Code.Click();
+
+                Save.Click();
 
                 //wait 
-                //Thread.Sleep(2000);
-                wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]")));
-
-                // Validate if record had edited successfully
-                /* if (driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]")).Text == "hi")
-                {
-                    Console.WriteLine("Passed - Record edited succesfully");
-                }
-                else
-                {
-                    Console.WriteLine("Failed - record is not edited");
-                } */
+                Thread.Sleep(2000);
                 Assert.That(driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]")).Text, Is.EqualTo("hi"));
-            }
 
-        public void deleteTMsteps(IWebDriver driver, WebDriverWait wait)
+            //wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]")));
+
+            // Validate if record had edited successfully
+            /* if (driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[1]")).Text == "hi")
+            {
+                Console.WriteLine("Passed - Record edited succesfully");
+            }
+            else
+            {
+                Console.WriteLine("Failed - record is not edited");
+            } */
+
+        }
+
+        public void deleteTMsteps()
         {
             // to delete record
             // count the no of rows in table
             IList<IWebElement> noOfRows = driver.FindElements(By.TagName("tr"));
             int rowscount = noOfRows.Count();
-
-
-            if (rowscount > 1)
+            
+            if (rowscount >= 1)
             {
+                Thread.Sleep(2000);
+
                 //click on delete 
                 IWebElement Delete = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[1]/td[5]/a[2]"));
                 Delete.Click();
@@ -143,10 +161,10 @@ namespace sruthi.Pages
                 Console.WriteLine("There are no records available to delete, creating a record first");
                
                 //to create record
-                createTMsteps(driver, wait);
+                createTMsteps();
 
                 //to delete record
-                deleteTMsteps(driver, wait);
+                deleteTMsteps();
 
             }
 

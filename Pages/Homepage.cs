@@ -9,7 +9,14 @@ namespace sruthi.Pages
 {
     class HomePage
     {
-        public void navigateTMsteps(IWebDriver driver)
+        IWebDriver driver;
+
+        public HomePage(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
+
+        public void navigateTMsteps()
         {
             // Click on administration dropdown
             IWebElement Administration = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));

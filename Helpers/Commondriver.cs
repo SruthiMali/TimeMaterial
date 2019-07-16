@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sruthi.Helpers
+namespace sruthi.Helper
 {
     class Commondriver
     {
-        public static IWebDriver driver { set; get;}
+        //public static IWebDriver driver { set; get;}
     }
 }

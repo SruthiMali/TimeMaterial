@@ -8,11 +8,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sruthi.Pages
+namespace sruthi 
 {
     class Loginpage
     {
-        public void Loginsteps(IWebDriver driver, WebDriverWait wait)
+        IWebDriver driver;
+        WebDriverWait wait;
+        public Loginpage(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
+
+        //[FindBy(How = How.xpath, using = "dfdsf")]
+        //Iwebelemnt element; 
+
+        IWebElement Username => driver.FindElement(By.Id("UserName"));
+        IWebElement Password => driver.FindElement(By.Id("Password"));
+        IWebElement Login => driver.FindElement(By.XPath("//*[@id='loginForm']/form/div[3]/input[1]"));
+        IWebElement Hellohari => driver.FindElement(By.XPath("//*[@id='logoutForm']/ul/li/a"));
+
+        public void Loginsteps()
         {
             
             //Maximize the window
@@ -62,6 +77,34 @@ namespace sruthi.Pages
             }
             */
             Assert.That(Hellohari.Text, Is.EqualTo("Hello hari!"));
+
+        } 
+
+        public void Loginsuccessfull()
+        {
+            //Maximize the browser
+            driver.Manage().Window.Maximize();
+
+            //Navigate to login page
+            driver.Navigate().GoToUrl("http://horse-dev.azurewebsites.net/Account/Login");
+
+            Username.SendKeys("Hari");
+            Password.SendKeys("123123");
+            Login.Click();
+
+            Assert.That(Hellohari.Text, Is.EqualTo("Hello hari!"));
+        }
+        public void LoginUnsuccessfull()
+        {
+            //Maximize the browser
+            driver.Manage().Window.Maximize();
+
+            //Navigate to login page
+            driver.Navigate().GoToUrl("http://horse-dev.azurewebsites.net/Account/Login");
+
+            Username.SendKeys("Sruthi");
+            Password.SendKeys("wrong password");
+            Login.Click();
 
         }
     }
